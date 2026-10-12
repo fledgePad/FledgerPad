@@ -318,6 +318,7 @@ textarea.inp{resize:vertical; min-height:66px}
   <symbol id="i-find" viewBox="0 0 16 16"><circle cx="7.2" cy="7.2" r="4.2"/><path d="m10.4 10.4 3 3"/></symbol>
   <symbol id="i-copy" viewBox="0 0 16 16"><path d="M5.5 5.5h7v7h-7z"/><path d="M10.5 5.5v-2h-7v7h2"/></symbol>
   <symbol id="i-out" viewBox="0 0 16 16"><path d="M7 3H3.5v9.5H13V9M9.5 3H13v3.5M13 3 7.5 8.5"/></symbol>
+  <symbol id="i-x" viewBox="0 0 16 16"><path d="M3 3l10 10M13 3 3 13" /></symbol>
   <symbol id="i-back" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></symbol>
   <symbol id="i-theme" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5"/><path d="M8 3v10" /><path d="M8 3a5 5 0 0 1 0 10" fill="currentColor" stroke="none"/></symbol>
 </svg>
@@ -339,6 +340,7 @@ textarea.inp{resize:vertical; min-height:66px}
     <input id="q" type="search" placeholder="Find a token" aria-label="Find a token">
     <kbd>/</kbd>
   </label>
+  <a class="btn tiny" href="https://x.com/fledgerpad" target="_blank" rel="noopener" aria-label="Fledger on X" title="@fledgerpad on X" style="text-decoration:none; color:inherit; font-weight:600">&#120143;</a>
   <button class="btn tiny" data-act="theme" aria-label="Switch theme" title="Switch theme">
     <svg class="ic" style="vertical-align:-3px"><use href="#i-theme"/></svg>
   </button>
@@ -390,7 +392,7 @@ var CHAIN={ id:4663, hex:"0x1237", name:"Robinhood Chain", rpc:"https://rpc.main
 var SHARE=0.8, GRAD=4, P0=4, P1=40, FEE=0.01, LAUNCH_FEE=0.005, GAS=0.0002;
 var KEY="fledger.state.v1";
 /* Isi link resmi di sini; yang kosong tidak ditampilkan. */
-var SOCIAL={ x:"", telegram:"", launcher:"" };
+var SOCIAL={ x:"https://x.com/fledgerpad", telegram:"", launcher:"" };
 /* Token Fledger: isi ca setelah launch, "Soon" otomatis berganti jadi alamat. */
 var TOKEN={ name:"Fledger token", ca:"" };
 
@@ -631,7 +633,7 @@ function badge(t,big){
 function socials(){
   var el=$("#social"); if(!el) return;
   var h="";
-  if(SOCIAL.x) h+='<a target="_blank" rel="noopener" href="'+esc(SOCIAL.x)+'">X / Twitter</a>';
+  if(SOCIAL.x) h+='<a target="_blank" rel="noopener" href="'+esc(SOCIAL.x)+'">X <span class="mono">@'+esc(SOCIAL.x.split("/").pop())+'</span></a>';
   if(SOCIAL.telegram) h+='<a target="_blank" rel="noopener" href="'+esc(SOCIAL.telegram)+'">Telegram</a>';
   if(SOCIAL.launcher) h+='<a target="_blank" rel="noopener" href="'+CHAIN.explorer+'/address/'+esc(SOCIAL.launcher)+'">Launcher <span class="mono">'+shortA(SOCIAL.launcher)+'</span></a>';
   el.innerHTML=h;
