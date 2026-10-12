@@ -227,6 +227,45 @@ textarea.inp{resize:vertical; min-height:66px}
 .social a:hover{color:var(--brand)}
 .social .mono{font-size:.72rem}
 
+/* ---- kedalaman: kartu terangkat ---- */
+:root{ --lift:0 1px 2px rgba(15,20,27,.05), 0 10px 28px -14px rgba(15,20,27,.18); --lift-hi:0 2px 4px rgba(15,20,27,.06), 0 16px 34px -14px rgba(15,20,27,.24); }
+:root[data-theme="dark"]{ --lift:0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.7); --lift-hi:0 2px 4px rgba(0,0,0,.45), 0 18px 36px -14px rgba(0,0,0,.8); }
+@media (prefers-color-scheme: dark){ :root:not([data-theme="light"]){ --lift:0 1px 2px rgba(0,0,0,.4), 0 12px 30px -14px rgba(0,0,0,.7); --lift-hi:0 2px 4px rgba(0,0,0,.45), 0 18px 36px -14px rgba(0,0,0,.8); } }
+.sheet,.block{border-radius:10px; box-shadow:var(--lift)}
+.hrow{border-radius:9px 9px 0 0}
+.sheet .row:last-child{border-radius:0 0 9px 9px}
+.btn{border-radius:7px}
+.inp{border-radius:7px}
+.badge{width:34px; height:34px; flex-basis:34px; border-radius:9px; box-shadow:inset 0 0 0 1px rgba(15,20,27,.06)}
+.badge.big{width:46px; height:46px; flex-basis:46px; border-radius:11px}
+.row{transition:background .12s, transform .12s}
+.row:hover{transform:translateX(2px)}
+@media (prefers-reduced-motion: reduce){ .row{transition:none} .row:hover{transform:none} }
+
+/* ---- statistik jadi kartu ---- */
+.figures{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.8rem; border-bottom:0; padding:0; margin-bottom:.4rem}
+.figure{position:relative; background:var(--sheet); border:1px solid var(--rule); border-radius:10px; padding:.85rem 1rem .8rem; box-shadow:var(--lift); overflow:hidden}
+.figure::before{content:""; position:absolute; left:0; right:0; top:0; height:3px; background:var(--brand)}
+.figure:nth-child(2)::before{background:var(--accent)}
+.figure:nth-child(3)::before{background:var(--up)}
+
+/* ---- hero gelap + kurva ---- */
+.hero{
+  display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:1.4rem; align-items:center;
+  background-color:#10151D; color:#E9EDF3; border:1px solid #10151D; border-radius:12px; box-shadow:var(--lift-hi);
+  background-image:repeating-linear-gradient(to bottom, transparent 0 27px, rgba(255,255,255,.045) 27px 28px);
+}
+.hero::before{background:#E3AE52; opacity:.7}
+.hero .eyebrow{color:#E3AE52; background:rgba(227,174,82,.14)}
+.hero h2{color:#F4F6FA}
+.hero h2 em{color:#9DB4FF}
+.hero p{color:#A9B3C1}
+.hero .btn{background:transparent; color:#E9EDF3; border-color:rgba(255,255,255,.22)}
+.hero .btn:hover{border-color:rgba(255,255,255,.5)}
+.hero .btn.key{background:#E9EDF3; color:#10151D; border-color:#E9EDF3}
+.hero .curve{width:100%; height:auto; display:block}
+.hero .curve text{font-family:"DM Mono",monospace; font-size:10px; fill:#8893A3}
+
 @media (max-width:920px){
   .wrap{grid-template-columns:minmax(0,1fr)}
   .rail,.status{display:none}
@@ -234,7 +273,6 @@ textarea.inp{resize:vertical; min-height:66px}
   .split{grid-template-columns:minmax(0,1fr)}
   .ticket{position:static}
   .pair{grid-template-columns:1fr}
-  .figures{gap:1.4rem}
   .figure b{font-size:1.25rem}
   .hrow{display:none}
   .row{grid-template-columns:minmax(0,1fr) 5.2rem 4.6rem; gap:.5rem; padding:.55rem .7rem}
@@ -252,6 +290,10 @@ textarea.inp{resize:vertical; min-height:66px}
   .hero{padding:1.2rem 1rem 1.1rem 2.2rem}
   .hero::before{left:1.3rem}
   .hero h2{font-size:1.45rem}
+  .hero{grid-template-columns:minmax(0,1fr)}
+  .hero .curve{max-width:340px}
+  .figures{grid-template-columns:repeat(3,minmax(0,1fr)); gap:.45rem}
+  .figure{padding:.6rem .6rem .55rem}
 }
 </style>
 </head>
@@ -585,6 +627,27 @@ function sortHead(k,label,cls){
   return '<button data-act="sort" data-k="'+k+'" data-on="'+(S.sort===k?1:0)+'" class="'+(cls||"")+'">'+
     label+(S.sort===k?(S.dir<0?" \u2193":" \u2191"):"")+'</button>';
 }
+function heroCurve(){
+  var w=300,h=170,l=34,r=286,t=18,b=140;
+  var avg=S.tokens.length?S.tokens.reduce(function(a,x){ return a+pct(x); },0)/S.tokens.length:0;
+  var X=function(f){ return l+(r-l)*f; }, Y=function(f){ return b-(b-t)*f; };
+  var cx=X(avg/100), cy=Y(avg/100);
+  return '<svg class="curve" viewBox="0 0 '+w+' '+h+'" role="img" aria-label="Bonding curve from '+P0+' to '+P1+' gwei">'+
+    '<line x1="'+l+'" y1="'+b+'" x2="'+r+'" y2="'+b+'" stroke="rgba(255,255,255,.18)"/>'+
+    '<line x1="'+l+'" y1="'+t+'" x2="'+l+'" y2="'+b+'" stroke="rgba(255,255,255,.18)"/>'+
+    '<path d="M'+X(0)+' '+Y(0)+' L'+X(1)+' '+Y(1)+' L'+X(1)+' '+b+' L'+X(0)+' '+b+'Z" fill="rgba(157,180,255,.10)"/>'+
+    '<path d="M'+X(0)+' '+Y(0)+' L'+cx.toFixed(1)+' '+cy.toFixed(1)+'" stroke="#9DB4FF" stroke-width="2.4" fill="none" stroke-linecap="round"/>'+
+    '<path d="M'+cx.toFixed(1)+' '+cy.toFixed(1)+' L'+X(1)+' '+Y(1)+'" stroke="#9DB4FF" stroke-width="1.4" stroke-dasharray="4 4" fill="none" opacity=".55"/>'+
+    '<line x1="'+X(1)+'" y1="'+(t-6)+'" x2="'+X(1)+'" y2="'+b+'" stroke="#E3AE52" stroke-dasharray="3 3"/>'+
+    '<circle cx="'+cx.toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="4.5" fill="#10151D" stroke="#9DB4FF" stroke-width="2"/>'+
+    '<text x="'+(l-4)+'" y="'+(b+3)+'" text-anchor="end">'+P0+'</text>'+
+    '<text x="'+(l-4)+'" y="'+(t+3)+'" text-anchor="end">'+P1+'</text>'+
+    '<text x="'+(l)+'" y="'+(b+16)+'">0 ETH</text>'+
+    '<text x="'+X(1)+'" y="'+(b+16)+'" text-anchor="end">'+GRAD+' ETH \u2192 pool</text>'+
+    '<text x="'+(cx+8).toFixed(1)+'" y="'+(cy+14).toFixed(1)+'">avg '+avg.toFixed(0)+'%</text>'+
+    '<text x="'+(l)+'" y="'+(t-6)+'">gwei</text>'+
+  '</svg>';
+}
 function viewMarkets(){
   var list=rows(), pool=S.tokens.reduce(function(a,t){ return a+t.raised; },0);
   var done=S.tokens.filter(function(t){ return t.done; }).length;
@@ -601,13 +664,13 @@ function viewMarkets(){
     '</button>';
   }).join(""):'<div class="void">Nothing matches that search. Clear it, or launch the first one.</div>';
 
-  return '<section class="hero">'+
+  return '<section class="hero"><div>'+
       '<span class="eyebrow">'+CHAIN.name+' \u00b7 '+CHAIN.id+'</span>'+
       '<h2>Launch a token for <em>'+fx(LAUNCH_FEE,3)+' ETH</em>.</h2>'+
       '<p>Fixed supply, no owner key. Price climbs a curve from '+P0+' to '+P1+' gwei, and at '+GRAD+' ETH the pool opens with the LP locked. Same rules for every token.</p>'+
       '<div class="cta"><button class="btn key" data-act="go" data-view="launch">Launch a token</button>'+
       '<button class="btn" data-act="go" data-view="docs">How it works</button></div>'+
-    '</section>'+
+    '</div>'+heroCurve()+'</section>'+
     '<div class="figures">'+
       '<span class="figure"><b>'+S.tokens.length+'</b><span>markets open</span></span>'+
       '<span class="figure"><b>'+split(pool,2)+'</b><span>ETH held in curves</span></span>'+
