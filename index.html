@@ -11,9 +11,10 @@
 :root{
   --paper:#EDEFF2; --sheet:#FFFFFF; --sunk:#E4E7EB; --rule:#D2D7DE; --hair:#E5E8EC;
   --ink:#0F141B; --ink-2:#5B6572; --ink-3:#8B95A2;
-  --brand:#25408F; --brand-ink:#FFFFFF; --brand-wash:rgba(37,64,143,.08);
+  --brand:#1F47C8; --brand-ink:#FFFFFF; --brand-wash:rgba(31,71,200,.09);
+  --logo:#25408F; --logo-ink:#FFFFFF; --accent:#B7791F; --accent-wash:rgba(183,121,31,.10);
   --up:#0C6B45; --down:#A8352A;
-  --fill:rgba(37,64,143,.07);
+  --fill:rgba(31,71,200,.07);
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
@@ -22,7 +23,8 @@
   :root:not([data-theme="light"]){
     --paper:#0E1116; --sheet:#151920; --sunk:#1B2029; --rule:#262D38; --hair:#1E242D;
     --ink:#E4E9F0; --ink-2:#98A3B2; --ink-3:#69737F;
-    --brand:#7C9BFF; --brand-ink:#0A0F17; --brand-wash:rgba(124,155,255,.12);
+    --brand:#8EA8FF; --brand-ink:#0A0F17; --brand-wash:rgba(142,168,255,.13);
+    --logo:#7C9BFF; --logo-ink:#0A0F17; --accent:#E3AE52; --accent-wash:rgba(227,174,82,.12);
     --up:#3FB584; --down:#E0705F;
     --fill:rgba(124,155,255,.10);
   }
@@ -30,7 +32,8 @@
 :root[data-theme="dark"]{
   --paper:#0E1116; --sheet:#151920; --sunk:#1B2029; --rule:#262D38; --hair:#1E242D;
   --ink:#E4E9F0; --ink-2:#98A3B2; --ink-3:#69737F;
-  --brand:#7C9BFF; --brand-ink:#0A0F17; --brand-wash:rgba(124,155,255,.12);
+  --brand:#8EA8FF; --brand-ink:#0A0F17; --brand-wash:rgba(142,168,255,.13);
+    --logo:#7C9BFF; --logo-ink:#0A0F17; --accent:#E3AE52; --accent-wash:rgba(227,174,82,.12);
   --up:#3FB584; --down:#E0705F;
   --fill:rgba(124,155,255,.10);
 }
@@ -164,7 +167,9 @@ textarea.inp{resize:vertical; min-height:66px}
 .btn{background:var(--sheet); border:1px solid var(--rule); border-radius:5px; padding:.42rem .8rem; font-size:.86rem; cursor:pointer}
 .btn:hover{border-color:var(--ink-3)}
 .btn:disabled{opacity:.5; cursor:not-allowed}
-.key{background:var(--brand); border-color:var(--brand); color:var(--brand-ink); font-weight:600}
+.key{background:var(--brand); border-color:var(--brand); color:var(--brand-ink); font-weight:600;
+  box-shadow:0 1px 0 rgba(15,20,27,.18), inset 0 1px 0 rgba(255,255,255,.14)}
+.key:active{transform:translateY(1px); box-shadow:none}
 .key:hover{border-color:var(--brand); filter:brightness(1.07)}
 .full{width:100%; display:block; padding:.55rem}
 .tiny{padding:.26rem .5rem; font-size:.78rem}
@@ -197,6 +202,31 @@ textarea.inp{resize:vertical; min-height:66px}
   .row.anim::before{animation:none; width:var(--w,0%)}
 }
 
+/* ---- hero: kertas ledger ---- */
+.hero{
+  position:relative; overflow:hidden; background:var(--sheet); border:1px solid var(--rule); border-radius:8px;
+  padding:1.6rem 1.6rem 1.5rem 3.1rem; margin-bottom:1.2rem;
+  background-image:repeating-linear-gradient(to bottom, transparent 0 27px, var(--hair) 27px 28px);
+}
+.hero::before{content:""; position:absolute; top:0; bottom:0; left:2.1rem; width:1px; background:var(--accent); opacity:.55}
+.hero .eyebrow{display:inline-flex; align-items:center; gap:.4rem; font-family:"DM Mono",monospace; font-size:.74rem;
+  color:var(--accent); background:var(--accent-wash); border-radius:4px; padding:.12rem .45rem; letter-spacing:0}
+.hero h2{font-size:1.9rem; line-height:1.12; letter-spacing:-.035em; margin:.7rem 0 .55rem; max-width:22ch}
+.hero h2 em{font-style:normal; color:var(--brand)}
+.hero p{color:var(--ink-2); font-size:.95rem; max-width:60ch}
+.hero .cta{display:flex; gap:.5rem; flex-wrap:wrap; margin-top:1.1rem}
+.hero .cta .btn{padding:.55rem 1rem; font-size:.9rem}
+
+/* ---- gambar token ---- */
+.badge{position:relative; overflow:hidden}
+.badge img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; background:var(--sheet)}
+
+/* ---- sosmed di sidebar ---- */
+.social{display:flex; flex-direction:column; gap:.15rem; margin-top:.5rem}
+.social a{color:var(--ink-2); text-decoration:none; display:flex; align-items:center; gap:.4rem}
+.social a:hover{color:var(--brand)}
+.social .mono{font-size:.72rem}
+
 @media (max-width:920px){
   .wrap{grid-template-columns:minmax(0,1fr)}
   .rail,.status{display:none}
@@ -219,6 +249,9 @@ textarea.inp{resize:vertical; min-height:66px}
   .tabs button{background:none; border:0; padding:.5rem 0 .45rem; font-size:.68rem; color:var(--ink-3);
     display:flex; flex-direction:column; align-items:center; gap:.18rem; cursor:pointer}
   .tabs button[aria-current="page"]{color:var(--brand); font-weight:600}
+  .hero{padding:1.2rem 1rem 1.1rem 2.2rem}
+  .hero::before{left:1.3rem}
+  .hero h2{font-size:1.45rem}
 }
 </style>
 </head>
@@ -240,11 +273,11 @@ textarea.inp{resize:vertical; min-height:66px}
 <header class="top">
   <span class="wordmark">
     <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
-      <rect width="18" height="18" rx="4" fill="var(--brand)"/>
-      <rect x="3.9" y="9.7" width="2.7" height="3.7" fill="var(--brand-ink)"/>
-      <rect x="7.65" y="7.3" width="2.7" height="6.1" fill="var(--brand-ink)"/>
-      <rect x="11.4" y="3.1" width="2.7" height="5.4" fill="var(--brand-ink)"/>
-      <rect x="3.9" y="14.1" width="10.2" height="0.9" fill="var(--brand-ink)" opacity=".45"/>
+      <rect width="18" height="18" rx="4" fill="var(--logo)"/>
+      <rect x="3.9" y="9.7" width="2.7" height="3.7" fill="var(--logo-ink)"/>
+      <rect x="7.65" y="7.3" width="2.7" height="6.1" fill="var(--logo-ink)"/>
+      <rect x="11.4" y="3.1" width="2.7" height="5.4" fill="var(--logo-ink)"/>
+      <rect x="3.9" y="14.1" width="10.2" height="0.9" fill="var(--logo-ink)" opacity=".45"/>
     </svg>
     Fledger<span class="sr"> launch console</span>
   </span>
@@ -272,6 +305,7 @@ textarea.inp{resize:vertical; min-height:66px}
     <div class="railfoot">
       Robinhood Chain<br>
       Chain <span class="mono">4663</span>, gas in <span class="mono">ETH</span>
+      <div class="social" id="social"></div>
     </div>
   </aside>
   <main id="app" tabindex="-1"></main>
@@ -302,6 +336,8 @@ textarea.inp{resize:vertical; min-height:66px}
 var CHAIN={ id:4663, hex:"0x1237", name:"Robinhood Chain", rpc:"https://rpc.mainnet.chain.robinhood.com", explorer:"https://robinhoodchain.blockscout.com" };
 var SHARE=0.8, GRAD=4, P0=4, P1=40, FEE=0.01, LAUNCH_FEE=0.005, GAS=0.0002;
 var KEY="fledger.state.v1";
+/* Isi link resmi di sini; yang kosong tidak ditampilkan. */
+var SOCIAL={ x:"", telegram:"", launcher:"" };
 
 var S={ view:"markets", id:null, sort:"new", dir:-1, filter:"all", q:"", range:"all",
   tokens:[], holds:{}, log:[], wallet:null, preview:false, block:0, busy:false, first:true };
@@ -395,7 +431,7 @@ function make(o){
   var t={ id:(o.sym||"t").toLowerCase()+"-"+Math.random().toString(36).slice(2,7),
     name:o.name, sym:o.sym, desc:o.desc||"", supply:o.supply||1e9, sold:0, raised:0,
     holders:o.holders||1, address:addr(), born:Date.now()-(o.age||0), lock:o.lock||"forever",
-    mine:!!o.mine, done:false, hist:[], tape:[] };
+    mine:!!o.mine, img:o.img||"", done:false, hist:[], tape:[] };
   if(o.raised){ t.raised=Math.min(GRAD,o.raised); t.sold=cap(t)*(t.raised/GRAD)*0.96; }
   var n=30, now=px(t);
   for(var i=0;i<n;i++){ t.hist.push(Math.max(P0,(P0+(now-P0)*(i/(n-1)))*(0.95+Math.random()*0.1))); }
@@ -534,7 +570,16 @@ function rows(){
   return r;
 }
 function badge(t,big){
-  return '<span class="badge'+(big?" big":"")+'" style="--h:'+hue(t.sym)+'" aria-hidden="true">'+initials(t.sym)+'</span>';
+  var img=t.img&&/^https:\/\//.test(t.img)?'<img src="'+esc(t.img)+'" alt="" loading="lazy" onerror="this.remove()">':'';
+  return '<span class="badge'+(big?" big":"")+'" style="--h:'+hue(t.sym)+'" aria-hidden="true">'+initials(t.sym)+img+'</span>';
+}
+function socials(){
+  var el=$("#social"); if(!el) return;
+  var h="";
+  if(SOCIAL.x) h+='<a target="_blank" rel="noopener" href="'+esc(SOCIAL.x)+'">X / Twitter</a>';
+  if(SOCIAL.telegram) h+='<a target="_blank" rel="noopener" href="'+esc(SOCIAL.telegram)+'">Telegram</a>';
+  if(SOCIAL.launcher) h+='<a target="_blank" rel="noopener" href="'+CHAIN.explorer+'/address/'+esc(SOCIAL.launcher)+'">Launcher <span class="mono">'+shortA(SOCIAL.launcher)+'</span></a>';
+  el.innerHTML=h;
 }
 function sortHead(k,label,cls){
   return '<button data-act="sort" data-k="'+k+'" data-on="'+(S.sort===k?1:0)+'" class="'+(cls||"")+'">'+
@@ -556,7 +601,14 @@ function viewMarkets(){
     '</button>';
   }).join(""):'<div class="void">Nothing matches that search. Clear it, or launch the first one.</div>';
 
-  return '<div class="figures">'+
+  return '<section class="hero">'+
+      '<span class="eyebrow">'+CHAIN.name+' \u00b7 '+CHAIN.id+'</span>'+
+      '<h2>Launch a token for <em>'+fx(LAUNCH_FEE,3)+' ETH</em>.</h2>'+
+      '<p>Fixed supply, no owner key. Price climbs a curve from '+P0+' to '+P1+' gwei, and at '+GRAD+' ETH the pool opens with the LP locked. Same rules for every token.</p>'+
+      '<div class="cta"><button class="btn key" data-act="go" data-view="launch">Launch a token</button>'+
+      '<button class="btn" data-act="go" data-view="docs">How it works</button></div>'+
+    '</section>'+
+    '<div class="figures">'+
       '<span class="figure"><b>'+S.tokens.length+'</b><span>markets open</span></span>'+
       '<span class="figure"><b>'+split(pool,2)+'</b><span>ETH held in curves</span></span>'+
       '<span class="figure"><b>'+done+'</b><span>graduated to a locked pool</span></span>'+
@@ -655,6 +707,9 @@ function viewLaunch(){
     '<div class="field" id="f-desc"><label for="i-desc">Description <span class="aside">traders read this first</span></label>'+
       '<textarea class="inp" id="i-desc" maxlength="180" placeholder="One line that says what this is."></textarea>'+
       '<p class="warn">At least ten characters.</p></div>'+
+    '<div class="field" id="f-img"><label for="i-img">Image link <span class="aside">optional, https, square works best</span></label>'+
+      '<input class="inp mono" id="i-img" type="url" placeholder="https://\u2026/logo.png" autocomplete="off">'+
+      '<p class="warn">Use a link that starts with https://</p></div>'+
     '<div class="pair">'+
       '<div class="field"><label for="i-supply">Total supply</label>'+
         '<select class="inp mono" id="i-supply"><option value="1000000000">1,000,000,000</option>'+
@@ -792,7 +847,7 @@ function form(){
   var g=function(s){ var e=$(s); return e?e.value:""; };
   return { name:g("#i-name").trim(), sym:g("#i-sym").trim().toUpperCase().replace(/[^A-Z0-9]/g,""),
     desc:g("#i-desc").trim(), supply:parseFloat(g("#i-supply"))||1e9,
-    first:parseFloat(g("#i-buy"))||0, lock:g("#i-lock")||"forever" };
+    first:parseFloat(g("#i-buy"))||0, lock:g("#i-lock")||"forever", img:g("#i-img").trim() };
 }
 function syncForm(){
   var d=form(), set=function(s,v){ var e=$(s); if(e) e.textContent=v; };
@@ -804,7 +859,7 @@ function syncForm(){
   set("#c-buy",fx(d.first,4)+" ETH");
   set("#c-total",fx(LAUNCH_FEE+d.first+GAS,4)+" ETH");
   var bg=$("#p-badge");
-  if(bg){ var s=d.sym||"HARD"; bg.textContent=initials(s); bg.style.setProperty("--h",hue(s)); }
+  if(bg){ var s=d.sym||"HARD"; bg.outerHTML=badge({sym:s,img:d.img},1).replace('class="badge big"','class="badge big" id="p-badge"'); }
 }
 function formOk(d){
   var ok=true, flag=function(sel,bad){ var e=$(sel); if(!e) return; e.classList.toggle("off",bad); if(bad) ok=false; };
@@ -812,6 +867,7 @@ function formOk(d){
   flag("#f-sym",d.sym.length<2);
   flag("#f-desc",d.desc.length<10);
   flag("#f-buy",!(d.first>=0&&d.first<=2));
+  flag("#f-img",!!d.img&&!/^https:\/\//.test(d.img));
   return ok;
 }
 async function deploy(){
@@ -829,7 +885,7 @@ async function deploy(){
     await new Promise(function(r){ setTimeout(r,520); });
     steps[i].className="step done"; steps[i].firstChild.textContent="\u2713";
   }
-  var t=make({name:d.name,sym:d.sym,desc:d.desc,supply:d.supply,lock:d.lock,mine:true});
+  var t=make({name:d.name,sym:d.sym,desc:d.desc,supply:d.supply,lock:d.lock,mine:true,img:d.img});
   t.hist=[P0,P0,P0,P0]; t.holders=1;
   S.tokens.unshift(t);
   record("launch",d.sym+" launched by "+(S.wallet?shortA(S.wallet):"you"));
@@ -947,6 +1003,7 @@ try{ var th=localStorage.getItem("fledger.theme"); if(th) document.documentEleme
 if(!restore()) seed();
 S.block=18400000+((Math.random()*90000)|0);
 draw();
+socials();
 $("#blockNo").textContent=fx(S.block,0);
 setInterval(tick,5000);
 })();
