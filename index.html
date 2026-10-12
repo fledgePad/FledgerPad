@@ -266,6 +266,16 @@ textarea.inp{resize:vertical; min-height:66px}
 .hero .curve{width:100%; height:auto; display:block}
 .hero .curve text{font-family:"DM Mono",monospace; font-size:10px; fill:#8893A3}
 
+/* ---- pengumuman token Fledger ---- */
+.soon{display:flex; align-items:center; gap:.6rem; flex-wrap:wrap; margin-top:1rem; padding-top:.9rem; border-top:1px dashed rgba(255,255,255,.16); font-size:.86rem; color:#C9D1DC}
+.soon b{color:#F4F6FA; font-weight:600}
+.soon .tag{font-family:"DM Mono",monospace; font-size:.72rem; color:#10151D; background:#E3AE52; border-radius:4px; padding:.1rem .4rem; font-weight:500}
+.soon .ca{font-family:"DM Mono",monospace; font-size:.8rem; color:#E3AE52; background:rgba(227,174,82,.12); border:1px dashed rgba(227,174,82,.45); border-radius:5px; padding:.12rem .45rem}
+.soon .btn{padding:.18rem .5rem; font-size:.76rem}
+.railsoon{margin:.2rem .5rem .1rem; padding:.55rem .6rem; border:1px dashed var(--accent); border-radius:8px; background:var(--accent-wash); font-size:.76rem; line-height:1.5}
+.railsoon b{display:block; font-size:.8rem; color:var(--ink)}
+.railsoon .mono{color:var(--accent)}
+
 @media (max-width:920px){
   .wrap{grid-template-columns:minmax(0,1fr)}
   .rail,.status{display:none}
@@ -344,6 +354,7 @@ textarea.inp{resize:vertical; min-height:66px}
     <button class="nav" data-act="go" data-view="launch"><svg class="ic"><use href="#i-launch"/></svg> New launch</button>
     <button class="nav" data-act="go" data-view="docs"><svg class="ic"><use href="#i-book"/></svg> How it works</button>
     <div class="railrule"></div>
+    <div class="railsoon" id="railsoon"></div>
     <div class="railfoot">
       Robinhood Chain<br>
       Chain <span class="mono">4663</span>, gas in <span class="mono">ETH</span>
@@ -380,6 +391,8 @@ var SHARE=0.8, GRAD=4, P0=4, P1=40, FEE=0.01, LAUNCH_FEE=0.005, GAS=0.0002;
 var KEY="fledger.state.v1";
 /* Isi link resmi di sini; yang kosong tidak ditampilkan. */
 var SOCIAL={ x:"", telegram:"", launcher:"" };
+/* Token Fledger: isi ca setelah launch, "Soon" otomatis berganti jadi alamat. */
+var TOKEN={ name:"Fledger token", ca:"" };
 
 var S={ view:"markets", id:null, sort:"new", dir:-1, filter:"all", q:"", range:"all",
   tokens:[], holds:{}, log:[], wallet:null, preview:false, block:0, busy:false, first:true };
@@ -627,6 +640,18 @@ function sortHead(k,label,cls){
   return '<button data-act="sort" data-k="'+k+'" data-on="'+(S.sort===k?1:0)+'" class="'+(cls||"")+'">'+
     label+(S.sort===k?(S.dir<0?" \u2193":" \u2191"):"")+'</button>';
 }
+function soonLine(){
+  var ca=TOKEN.ca?'<span class="ca">'+shortA(TOKEN.ca)+'</span><button class="btn" data-act="copy" data-copy="'+esc(TOKEN.ca)+'">Copy</button>'
+                 :'<span class="ca">Soon</span>';
+  return '<div class="soon"><span class="tag">'+(TOKEN.ca?'LIVE':'SOON')+'</span><b>'+esc(TOKEN.name)+'</b>'+
+    '<span>'+(TOKEN.ca?'is live':'launching soon')+'</span><span class="grow"></span><span>CA:</span>'+ca+'</div>';
+}
+function railSoon(){
+  var el=$("#railsoon"); if(!el) return;
+  el.innerHTML='<b>'+esc(TOKEN.name)+'</b>'+(TOKEN.ca
+    ? 'CA <span class="mono">'+shortA(TOKEN.ca)+'</span>'
+    : 'Launching soon \u00b7 CA: <span class="mono">Soon</span>');
+}
 function heroCurve(){
   var w=300,h=170,l=34,r=286,t=18,b=140;
   var avg=S.tokens.length?S.tokens.reduce(function(a,x){ return a+pct(x); },0)/S.tokens.length:0;
@@ -670,6 +695,7 @@ function viewMarkets(){
       '<p>Fixed supply, no owner key. Price climbs a curve from '+P0+' to '+P1+' gwei, and at '+GRAD+' ETH the pool opens with the LP locked. Same rules for every token.</p>'+
       '<div class="cta"><button class="btn key" data-act="go" data-view="launch">Launch a token</button>'+
       '<button class="btn" data-act="go" data-view="docs">How it works</button></div>'+
+      soonLine()+
     '</div>'+heroCurve()+'</section>'+
     '<div class="figures">'+
       '<span class="figure"><b>'+S.tokens.length+'</b><span>markets open</span></span>'+
@@ -1067,6 +1093,7 @@ if(!restore()) seed();
 S.block=18400000+((Math.random()*90000)|0);
 draw();
 socials();
+railSoon();
 $("#blockNo").textContent=fx(S.block,0);
 setInterval(tick,5000);
 })();
