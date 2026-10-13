@@ -394,7 +394,7 @@ var KEY="fledger.state.v1";
 /* Isi link resmi di sini; yang kosong tidak ditampilkan. */
 var SOCIAL={ x:"https://x.com/fledgerpad", telegram:"", launcher:"" };
 /* Token Fledger: isi ca setelah launch, "Soon" otomatis berganti jadi alamat. */
-var TOKEN={ name:"Fledger token", ca:"" };
+var TOKEN={ name:"$FLEDGER", ca:"0x2ee6d16036d79d2279ae559166d0be1f5aa01a6b", live:false, launchAt:"2026-10-13T14:00:00Z" };
 
 var S={ view:"markets", id:null, sort:"new", dir:-1, filter:"all", q:"", range:"all",
   tokens:[], holds:{}, log:[], wallet:null, preview:false, block:0, busy:false, first:true };
@@ -643,15 +643,27 @@ function sortHead(k,label,cls){
     label+(S.sort===k?(S.dir<0?" \u2193":" \u2191"):"")+'</button>';
 }
 function soonLine(){
-  var ca=TOKEN.ca?'<span class="ca">'+shortA(TOKEN.ca)+'</span><button class="btn" data-act="copy" data-copy="'+esc(TOKEN.ca)+'">Copy</button>'
-                 :'<span class="ca">Soon</span>';
-  return '<div class="soon"><span class="tag">'+(TOKEN.ca?'LIVE':'SOON')+'</span><b>'+esc(TOKEN.name)+'</b>'+
-    '<span>'+(TOKEN.ca?'is live':'launching soon')+'</span><span class="grow"></span><span>CA:</span>'+ca+'</div>';
+  if(!TOKEN.ca) return '<div class="soon"><span class="tag">SOON</span><b>'+esc(TOKEN.name)+'</b><span>launching soon</span><span class="grow"></span><span>CA:</span><span class="ca">Soon</span></div>';
+  var copy='<button class="btn" data-act="copy" data-copy="'+esc(TOKEN.ca)+'">Copy</button>';
+  var head=TOKEN.live
+    ? '<span class="tag">LIVE</span><b>'+esc(TOKEN.name)+'</b><span>is live on Robinhood Chain</span>'
+    : '<span class="tag">14:00 UTC</span><b>'+esc(TOKEN.name)+'</b><span>launches 14:00 UTC \u00b7 21:00 WIB</span><span class="grow"></span><span class="ca" data-cd>\u2014</span>';
+  return '<div class="soon">'+head+'</div>'+
+    '<div class="soon" style="margin-top:.5rem;padding-top:.6rem"><span>'+(TOKEN.live?'Official CA':'Official CA, ready before launch')+'</span>'+
+    '<span class="grow"></span><span class="ca" style="word-break:break-all">'+esc(TOKEN.ca)+'</span>'+copy+'</div>';
 }
+function countdown(){
+  var t=Date.parse(TOKEN.launchAt||""), els=document.querySelectorAll("[data-cd]");
+  if(!els.length||!t) return;
+  var d=Math.max(0,Math.floor((t-Date.now())/1000));
+  var txt=d>0?("in "+String(Math.floor(d/3600)).padStart(2,"0")+":"+String(Math.floor(d%3600/60)).padStart(2,"0")+":"+String(d%60).padStart(2,"0")):"launching now";
+  for(var i=0;i<els.length;i++) els[i].textContent=txt;
+}
+setInterval(countdown,1000);
 function railSoon(){
   var el=$("#railsoon"); if(!el) return;
   el.innerHTML='<b>'+esc(TOKEN.name)+'</b>'+(TOKEN.ca
-    ? 'CA <span class="mono">'+shortA(TOKEN.ca)+'</span>'
+    ? (TOKEN.live?'Live \u00b7 ':'14:00 UTC \u00b7 21:00 WIB<br>')+'CA <span class="mono">'+shortA(TOKEN.ca)+'</span>'
     : 'Launching soon \u00b7 CA: <span class="mono">Soon</span>');
 }
 function heroCurve(){
@@ -1096,6 +1108,7 @@ S.block=18400000+((Math.random()*90000)|0);
 draw();
 socials();
 railSoon();
+countdown();
 $("#blockNo").textContent=fx(S.block,0);
 setInterval(tick,5000);
 })();
