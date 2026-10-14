@@ -1,6 +1,6 @@
 // Airdrop whitelist: satu blob privat per wallet (wl/<address>.json).
 // POST {address, handle, hp}  -> daftar;  GET ?address=0x.. -> cek status.
-const { put, head } = require("@vercel/blob");
+const { put, head, BlobNotFoundError } = require("@vercel/blob");
 
 const CLOSES_AT = Date.parse("2026-10-21T14:00:00Z");
 const ADDR = /^0x[0-9a-fA-F]{40}$/;
@@ -15,7 +15,7 @@ function send(res, code, body) {
 
 async function exists(path) {
   try { await head(path); return true; }
-  catch (e) { if (e && e.name === "BlobNotFoundError") return false; throw e; }
+  catch (e) { if (e instanceof BlobNotFoundError || /does not exist/i.test((e && e.message) || "")) return false; throw e; }
 }
 
 async function readBody(req) {
