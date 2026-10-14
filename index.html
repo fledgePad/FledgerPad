@@ -305,6 +305,40 @@ textarea.inp{resize:vertical; min-height:66px}
   .figures{grid-template-columns:repeat(3,minmax(0,1fr)); gap:.45rem}
   .figure{padding:.6rem .6rem .55rem}
 }
+
+/* ---- airdrop ---- */
+.adbar{display:flex; align-items:center; gap:.8rem; flex-wrap:wrap; margin-bottom:1rem; padding:.75rem 1rem; border-radius:10px; cursor:pointer;
+  background:linear-gradient(100deg,#1A1406,#2A1F08 55%,#10151D); border:1px solid rgba(227,174,82,.45); color:#F4F6FA; box-shadow:var(--lift); width:100%; text-align:left; font:inherit}
+.adbar:hover{border-color:#E3AE52}
+.adbar .tag{font-family:"DM Mono",monospace; font-size:.72rem; color:#10151D; background:#E3AE52; border-radius:4px; padding:.1rem .45rem}
+.adbar b{font-size:.98rem} .adbar .dim{color:#C9B48A; font-size:.84rem}
+.adbar .go{margin-left:auto; font-family:"DM Mono",monospace; font-size:.8rem; color:#E3AE52}
+.adhero{position:relative; overflow:hidden; border-radius:12px; padding:2rem 1.8rem 1.7rem; margin-bottom:1rem; color:#F4F6FA;
+  background:radial-gradient(120% 140% at 85% 0%,rgba(227,174,82,.28),rgba(227,174,82,0) 55%),#10151D; border:1px solid rgba(227,174,82,.35); box-shadow:var(--lift-hi)}
+.adhero .eyebrow{display:inline-flex; font-family:"DM Mono",monospace; font-size:.74rem; color:#E3AE52; background:rgba(227,174,82,.14); border-radius:4px; padding:.12rem .45rem}
+.adhero h1{font-size:2.6rem; line-height:1.05; letter-spacing:-.04em; margin:.8rem 0 .5rem}
+.adhero h1 span{color:#E3AE52}
+.adhero p{color:#A9B3C1; max-width:58ch; font-size:.95rem}
+.adhero .stats{display:flex; gap:2rem; flex-wrap:wrap; margin-top:1.3rem}
+.adhero .stats b{display:block; font-size:1.35rem; font-family:"DM Mono",monospace; font-weight:500; color:#F4F6FA}
+.adhero .stats span{font-size:.76rem; color:#8893A3}
+.adhero .coins{position:absolute; inset:0; pointer-events:none}
+.adhero .coins i{position:absolute; top:-30px; width:16px; height:16px; border-radius:50%; background:radial-gradient(circle at 35% 30%,#FFE6A8,#E3AE52 55%,#9A6B17); opacity:.0; animation:fall linear infinite}
+@keyframes fall{0%{transform:translateY(0) rotate(0); opacity:0} 10%{opacity:.85} 100%{transform:translateY(340px) rotate(300deg); opacity:0}}
+@media (prefers-reduced-motion: reduce){ .adhero .coins{display:none} }
+.tasks{counter-reset:t; display:grid; gap:.55rem}
+.task{display:flex; align-items:center; gap:.75rem; padding:.7rem .8rem; border:1px solid var(--rule); border-radius:9px; background:var(--paper)}
+.task::before{counter-increment:t; content:counter(t); flex:0 0 1.6rem; height:1.6rem; border-radius:50%; display:grid; place-items:center; font-family:"DM Mono",monospace; font-size:.78rem; background:var(--accent-wash); color:var(--accent)}
+.task.done::before{content:"\2713"; background:var(--up); color:#fff}
+.task div{flex:1; min-width:0} .task b{display:block; font-size:.88rem} .task span{font-size:.78rem; color:var(--ink-2)}
+.task .btn{white-space:nowrap; text-decoration:none; color:inherit; font-size:.8rem}
+.safe{border:1px solid rgba(168,53,42,.35); background:rgba(168,53,42,.06); border-radius:9px; padding:.7rem .85rem; font-size:.8rem; color:var(--ink-2); margin-top:.9rem}
+.safe b{color:var(--down)}
+.okbox{display:none; margin-top:.8rem; padding:.75rem .85rem; border-radius:9px; background:rgba(12,107,69,.09); border:1px solid rgba(12,107,69,.35); font-size:.85rem}
+.okbox.on{display:block}
+.errline{color:var(--down); font-size:.8rem; min-height:1.1em; margin:.3rem 0 0}
+.hp{position:absolute; left:-9999px; width:1px; height:1px; opacity:0}
+@media (max-width:920px){ .adhero{padding:1.4rem 1.1rem 1.3rem} .adhero h1{font-size:1.9rem} .adhero .stats{gap:1.2rem} .tabs{grid-template-columns:repeat(6,1fr)!important} }
 </style>
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
@@ -321,6 +355,7 @@ textarea.inp{resize:vertical; min-height:66px}
   <symbol id="i-out" viewBox="0 0 16 16"><path d="M7 3H3.5v9.5H13V9M9.5 3H13v3.5M13 3 7.5 8.5"/></symbol>
   <symbol id="i-x" viewBox="0 0 16 16"><path d="M3 3l10 10M13 3 3 13" /></symbol>
   <symbol id="i-back" viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></symbol>
+  <symbol id="i-gift" viewBox="0 0 16 16"><path d="M2.5 6.5h11v2.5h-11zM3.5 9v4.5h9V9M8 6.5v7M8 6.5C6.5 6.5 4.8 5.9 4.8 4.6 4.8 3.4 6.6 3.2 8 6.5c1.4-3.3 3.2-3.1 3.2-1.9 0 1.3-1.7 1.9-3.2 1.9"/></symbol>
   <symbol id="i-theme" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5"/><path d="M8 3v10" /><path d="M8 3a5 5 0 0 1 0 10" fill="currentColor" stroke="none"/></symbol>
 </svg>
 
@@ -353,6 +388,7 @@ textarea.inp{resize:vertical; min-height:66px}
     <button class="nav" data-act="go" data-view="markets"><svg class="ic"><use href="#i-markets"/></svg> Markets <span class="tally" id="tMarkets"></span></button>
     <button class="nav" data-act="go" data-view="portfolio"><svg class="ic"><use href="#i-wallet"/></svg> Portfolio</button>
     <button class="nav" data-act="go" data-view="activity"><svg class="ic"><use href="#i-tape"/></svg> Activity <span class="tally" id="tActivity"></span></button>
+    <button class="nav" data-act="go" data-view="airdrop"><svg class="ic"><use href="#i-gift"/></svg> Airdrop <span class="tally" style="color:var(--accent)">$10K</span></button>
     <div class="railrule"></div>
     <button class="nav" data-act="go" data-view="launch"><svg class="ic"><use href="#i-launch"/></svg> New launch</button>
     <button class="nav" data-act="go" data-view="docs"><svg class="ic"><use href="#i-book"/></svg> How it works</button>
@@ -377,6 +413,7 @@ textarea.inp{resize:vertical; min-height:66px}
 
 <nav class="tabs" aria-label="Sections">
   <button data-act="go" data-view="markets"><svg class="ic"><use href="#i-markets"/></svg>Markets</button>
+  <button data-act="go" data-view="airdrop"><svg class="ic"><use href="#i-gift"/></svg>Airdrop</button>
   <button data-act="go" data-view="launch"><svg class="ic"><use href="#i-launch"/></svg>Launch</button>
   <button data-act="go" data-view="portfolio"><svg class="ic"><use href="#i-wallet"/></svg>Portfolio</button>
   <button data-act="go" data-view="activity"><svg class="ic"><use href="#i-tape"/></svg>Activity</button>
@@ -396,6 +433,9 @@ var KEY="fledger.state.v1";
 var SOCIAL={ x:"https://x.com/fledgerpad", telegram:"", launcher:"" };
 /* Token Fledger: isi ca setelah launch, "Soon" otomatis berganti jadi alamat. */
 var TOKEN={ name:"$FLEDGER", ca:"", live:false, launchAt:"" };
+/* Airdrop: ubah angka/tanggal di sini. post = link postingan X yang harus di-repost. */
+var AIRDROP={ pool:10000, asset:"USDT", network:"Robinhood Chain", winners:500, each:20,
+  closesAt:"2026-10-21T14:00:00Z", drawDate:"October 24, 2026", post:"" };
 
 var S={ view:"markets", id:null, sort:"new", dir:-1, filter:"all", q:"", range:"all",
   tokens:[], holds:{}, log:[], wallet:null, preview:false, block:0, busy:false, first:true };
@@ -704,7 +744,7 @@ function viewMarkets(){
     '</button>';
   }).join(""):'<div class="void">Nothing matches that search. Clear it, or launch the first one.</div>';
 
-  return '<section class="hero"><div>'+
+  return adBar()+'<section class="hero"><div>'+
       '<span class="eyebrow">'+CHAIN.name+' \u00b7 '+CHAIN.id+'</span>'+
       '<h2>Launch a token for <em>'+fx(LAUNCH_FEE,3)+' ETH</em>.</h2>'+
       '<p>Fixed supply, no owner key. Price climbs a curve from '+P0+' to '+P1+' gwei, and at '+GRAD+' ETH the pool opens with the LP locked. Same rules for every token.</p>'+
@@ -920,6 +960,107 @@ function viewDocs(){
   '</div></div>';
 }
 
+/* ---------- airdrop ---------- */
+function money(n){ return "$"+Number(n).toLocaleString("en-US"); }
+function adLeft(){
+  var d=Math.max(0,Math.floor((Date.parse(AIRDROP.closesAt)-Date.now())/1000));
+  if(!d) return "closed";
+  var dd=Math.floor(d/86400), hh=Math.floor(d%86400/3600), mm=Math.floor(d%3600/60), ss=d%60;
+  return (dd?dd+"d ":"")+String(hh).padStart(2,"0")+":"+String(mm).padStart(2,"0")+":"+String(ss).padStart(2,"0");
+}
+function adClosed(){ return Date.now()>Date.parse(AIRDROP.closesAt); }
+function adBar(){
+  return '<button class="adbar" data-act="go" data-view="airdrop"><span class="tag">AIRDROP</span>'+
+    '<b>'+money(AIRDROP.pool)+' '+esc(AIRDROP.asset)+' for early supporters</b>'+
+    '<span class="dim">'+(adClosed()?'whitelist closed':'whitelist open · closes in <span data-adcd>'+adLeft()+'</span>')+'</span>'+
+    '<span class="go">Join →</span></button>';
+}
+function viewAirdrop(){
+  var xs=SOCIAL.x||"https://x.com/fledgerpad", h=esc(xs.split("/").pop());
+  var coins=""; for(var i=0;i<14;i++) coins+='<i style="left:'+(4+i*7)+'%;animation-duration:'+(4+(i*37%30)/10)+'s;animation-delay:'+((i*53%40)/10)+'s;transform:scale('+(0.6+(i%4)*0.15)+')"></i>';
+  var done=adDone();
+  function task(k,title,sub,href,label){
+    return '<div class="task'+(done[k]?' done':'')+'"><div><b>'+title+'</b><span>'+sub+'</span></div>'+
+      (href?'<a class="btn" target="_blank" rel="noopener" data-act="adtask" data-k="'+k+'" href="'+esc(href)+'">'+label+'</a>':'')+'</div>';
+  }
+  var postUrl=AIRDROP.post||xs;
+  return '<section class="adhero"><div class="coins" aria-hidden="true">'+coins+'</div>'+
+      '<span class="eyebrow">Fledger airdrop · '+esc(AIRDROP.network)+'</span>'+
+      '<h1><span>'+money(AIRDROP.pool)+'</span> '+esc(AIRDROP.asset)+'<br>for the first flock.</h1>'+
+      '<p>We are giving '+money(AIRDROP.pool)+' in '+esc(AIRDROP.asset)+' to people who show up early. Put your wallet on the whitelist, do three things on X, and '+AIRDROP.winners+' wallets get '+money(AIRDROP.each)+' each.</p>'+
+      '<div class="stats"><div><b>'+money(AIRDROP.pool)+'</b><span>total pool</span></div>'+
+        '<div><b>'+AIRDROP.winners+' × '+money(AIRDROP.each)+'</b><span>winning wallets</span></div>'+
+        '<div><b data-adcd>'+adLeft()+'</b><span>until the whitelist closes</span></div></div>'+
+    '</section>'+
+    '<div class="split"><div>'+
+      '<div class="block"><div class="bh"><h3>1. Do the tasks</h3></div><div class="bb"><div class="tasks">'+
+        task("follow","Follow @"+h+" on X","Winners are announced there first.","https://x.com/intent/follow?screen_name="+h,"Follow")+
+        task("repost","Like and repost the airdrop post","Use the pinned post on @"+h+".",postUrl,"Open post")+
+        task("tag","Reply and tag 3 friends","Accounts that look like bots are skipped.",postUrl,"Reply")+
+      '</div></div></div>'+
+      '<div class="block"><div class="bh"><h3>How winners are picked</h3></div><div class="bb s dim">'+
+        '<span class="line"><span>Whitelist closes</span><span class="mono">'+new Date(AIRDROP.closesAt).toUTCString().replace(":00 GMT"," UTC").slice(5)+'</span></span>'+
+        '<span class="line"><span>Entries checked</span><span>tasks done, one wallet per person</span></span>'+
+        '<span class="line"><span>Random draw</span><span>'+esc(AIRDROP.drawDate)+'</span></span>'+
+        '<span class="line"><span>Paid in</span><span>'+esc(AIRDROP.asset)+' on '+esc(AIRDROP.network)+'</span></span>'+
+        '<span class="line"><span>Winner list</span><span>posted on @'+h+'</span></span>'+
+      '</div></div>'+
+    '</div><div class="ticket">'+
+      '<div class="block"><div class="bh"><h3>2. Join the whitelist</h3></div><div class="bb">'+
+        (adClosed()?'<p class="s dim">The whitelist is closed. Check your wallet below to see if it made it in.</p>':
+        '<div class="field" id="f-wl"><label for="wl-addr">EVM wallet address <span class="aside">where the '+esc(AIRDROP.asset)+' goes</span></label>'+
+          '<input class="inp mono" id="wl-addr" placeholder="0x…" autocomplete="off" spellcheck="false" maxlength="42"></div>'+
+        '<div class="field" id="f-wh"><label for="wl-handle">X handle</label>'+
+          '<input class="inp mono" id="wl-handle" placeholder="@yourname" autocomplete="off" spellcheck="false" maxlength="40"></div>'+
+        '<input class="hp" id="wl-hp" tabindex="-1" autocomplete="off" aria-hidden="true">'+
+        '<button class="btn key full" data-act="wljoin" id="wlBtn">Join the whitelist</button>'+
+        '<p class="errline" id="wlErr"></p>')+
+        '<div class="okbox" id="wlOk"></div>'+
+        '<div style="margin-top:.9rem;border-top:1px solid var(--hair);padding-top:.8rem">'+
+          '<label class="xs dim" for="wl-check" style="display:block;margin-bottom:.3rem">Already joined? Check a wallet</label>'+
+          '<div style="display:flex;gap:.4rem"><input class="inp mono" id="wl-check" placeholder="0x…" maxlength="42" spellcheck="false">'+
+          '<button class="btn" data-act="wlcheck">Check</button></div><p class="errline" id="wlChk"></p></div>'+
+        '<div class="safe"><b>We never ask for your seed phrase or private key.</b> Joining needs no wallet connection and no signature. '+
+        'Payouts are sent to you; nobody will ask you to pay a fee or "claim" on another site. Only trust links posted by @'+h+'.</div>'+
+        '<p class="xs dim3" style="margin-top:.7rem">We store your wallet, X handle and rough location to filter duplicate entries. Not financial advice. Void where prohibited.</p>'+
+      '</div></div>'+
+    '</div></div>';
+}
+function adDone(){ try{ return JSON.parse(localStorage.getItem("fledger.ad")||"{}"); }catch(e){ return {}; } }
+function adMark(k){ var d=adDone(); d[k]=1; try{ localStorage.setItem("fledger.ad",JSON.stringify(d)); }catch(e){} }
+setInterval(function(){ var els=document.querySelectorAll("[data-adcd]"); for(var i=0;i<els.length;i++) els[i].textContent=adLeft(); },1000);
+async function wlJoin(){
+  var btn=$("#wlBtn"), err=$("#wlErr"), ok=$("#wlOk");
+  var a=($("#wl-addr").value||"").trim(), h=($("#wl-handle").value||"").trim();
+  $("#f-wl").classList.toggle("off",!/^0x[0-9a-fA-F]{40}$/.test(a));
+  $("#f-wh").classList.toggle("off",!h);
+  if(!/^0x[0-9a-fA-F]{40}$/.test(a)){ err.textContent="That doesn't look like an EVM address (0x + 40 characters)."; return; }
+  if(!h){ err.textContent="Add your X handle so we can check the tasks."; return; }
+  err.textContent=""; btn.disabled=true; btn.textContent="Joining…";
+  try{
+    var r=await fetch("/api/whitelist",{method:"POST",headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({address:a,handle:h,hp:$("#wl-hp").value})});
+    var j=await r.json().catch(function(){ return {}; });
+    if(!r.ok||!j.ok){ err.textContent=j.error||"Something went wrong. Try again."; return; }
+    ok.innerHTML=(j.already?'<b>This wallet is already on the whitelist.</b>':'<b>You are on the whitelist.</b>')+
+      '<br><span class="mono xs">'+esc(shortA(a))+'</span> · finish the X tasks before the whitelist closes, the draw is on '+esc(AIRDROP.drawDate)+'.';
+    ok.classList.add("on"); note(j.already?"Already whitelisted":"Wallet whitelisted");
+    try{ localStorage.setItem("fledger.wl",a); }catch(e){}
+  }catch(e){ err.textContent="Network error. Try again."; }
+  finally{ btn.disabled=false; btn.textContent="Join the whitelist"; }
+}
+async function wlCheck(){
+  var a=($("#wl-check").value||"").trim(), o=$("#wlChk");
+  if(!/^0x[0-9a-fA-F]{40}$/.test(a)){ o.textContent="Enter a full 0x address."; return; }
+  o.textContent="Checking…"; o.style.color="";
+  try{
+    var r=await fetch("/api/whitelist?address="+encodeURIComponent(a)), j=await r.json();
+    if(!j.ok){ o.textContent=j.error||"Try again."; return; }
+    o.style.color=j.listed?"var(--up)":"var(--down)";
+    o.textContent=j.listed?"✓ This wallet is on the whitelist.":"Not on the whitelist yet.";
+  }catch(e){ o.textContent="Network error. Try again."; }
+}
+
 /* ---------- render ---------- */
 function draw(){
   var host=$("#app");
@@ -928,6 +1069,7 @@ function draw(){
     : S.view==="portfolio"?viewPortfolio()
     : S.view==="activity"?viewActivity()
     : S.view==="docs"?viewDocs()
+    : S.view==="airdrop"?viewAirdrop()
     : viewMarkets();
   var current=S.view==="token"?"markets":S.view;
   Array.prototype.forEach.call(document.querySelectorAll("[data-act='go']"),function(b){
@@ -937,6 +1079,7 @@ function draw(){
   var a=$("#tMarkets"); if(a) a.textContent=S.tokens.length;
   var b=$("#tActivity"); if(b) b.textContent=S.log.length||"";
   if(S.view==="launch") syncForm();
+  if(S.view==="airdrop"){ var wa=$("#wl-addr"); if(wa&&!wa.value){ try{ wa.value=localStorage.getItem("fledger.wl")||(S.wallet&&!S.preview?S.wallet:""); }catch(e){} } }
   if(S.view==="token"){ syncEst(); bindChart(find(S.id)); }
   S.first=false;
   walletLabel();
@@ -1041,6 +1184,9 @@ document.addEventListener("click",function(e){
     sell(t,h.qty*parseFloat(el.getAttribute("data-part"))); draw(); return;
   }
   if(a==="deploy"){ deploy(); return; }
+  if(a==="wljoin"){ wlJoin(); return; }
+  if(a==="wlcheck"){ wlCheck(); return; }
+  if(a==="adtask"){ adMark(el.getAttribute("data-k")); var tk=el.closest(".task"); if(tk) tk.classList.add("done"); return; }
   if(a==="copy"){
     var txt=el.getAttribute("data-copy");
     if(navigator.clipboard&&navigator.clipboard.writeText){
@@ -1106,6 +1252,7 @@ function tick(){
 try{ var th=localStorage.getItem("fledger.theme"); if(th) document.documentElement.setAttribute("data-theme",th); }catch(e){}
 if(!restore()) seed();
 S.block=18400000+((Math.random()*90000)|0);
+if(location.hash==="#airdrop") S.view="airdrop";
 draw();
 socials();
 railSoon();
